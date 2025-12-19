@@ -32,8 +32,11 @@ def merge_regions_and_departments(regions, departments):
         columns={'code': 'code_reg', 'name': 'name_reg'}
     )
     departments_renamed = departments.rename(
-        columns={'code': 'code_dep', 'name': 'name_dep',
-                 'region_code': 'code_reg'}
+        columns={
+            'code': 'code_dep',
+            'name': 'name_dep',
+            'region_code': 'code_reg'
+        }
     )
     merged = departments_renamed.merge(
         regions_renamed[['code_reg', 'name_reg']],
@@ -48,8 +51,8 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     You can drop the lines relative to DOM-TOM-COM departments, and the
     french living abroad, which all have a code that contains `Z`.
 
-    DOM-TOM-COM departments are departements that are remote from metropolitan
-    France, like Guadaloupe, Reunion, or Tahiti.
+    DOM-TOM-COM departments are departements that are remote from
+    metropolitan France, like Guadaloupe, Reunion, or Tahiti.
     """
     referendum_copy = referendum.copy()
     referendum_copy['Department code'] = (
@@ -89,8 +92,9 @@ def plot_referendum_map(referendum_result_by_regions):
 
     * Load the geographic data with geopandas from `regions.geojson`.
     * Merge these info into `referendum_result_by_regions`.
-    * Use the method `GeoDataFrame.plot` to display the result map. The results
-      should display the rate of 'Choice A' over all expressed ballots.
+    * Use the method `GeoDataFrame.plot` to display the result map. The
+      results should display the rate of 'Choice A' over all expressed
+      ballots.
     * Return a gpd.GeoDataFrame with a column 'ratio' containing the results.
     """
     regions_geo = gpd.read_file('data/regions.geojson')
@@ -103,7 +107,11 @@ def plot_referendum_map(referendum_result_by_regions):
         referendum_with_geo['Choice A'] /
         (referendum_with_geo['Choice A'] + referendum_with_geo['Choice B'])
     )
-    referendum_with_geo.plot(column='ratio', cmap='RdYlGn', legend=True)
+    referendum_with_geo.plot(
+        column='ratio',
+        cmap='RdYlGn',
+        legend=True
+    )
     return referendum_with_geo
 
 
